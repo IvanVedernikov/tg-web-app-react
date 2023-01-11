@@ -20,7 +20,7 @@ const Form = () => {
     };
     tg.sendData(JSON.stringify(data));
     // eslint-disable-next-line
-  }, []);
+  }, [country, city, street, subject]);
 
   React.useEffect(() => {
     tg.onEvent("mainButtonClicked", onSendData);
