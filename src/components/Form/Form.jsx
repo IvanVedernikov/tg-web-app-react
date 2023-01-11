@@ -24,6 +24,9 @@ const Form = () => {
 
   React.useEffect(() => {
     tg.onEvent("mainButtonClicked", onSendData);
+    return () => {
+      tg.offEvent("mainButtonClicked", onSendData);
+    };
     // eslint-disable-next-line
   }, []);
 
