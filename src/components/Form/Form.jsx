@@ -12,8 +12,6 @@ const Form = () => {
 
   React.useEffect(() => {
     tg.MainButton.setParams({ text: "Отправить данные" });
-    tg.MainButton.show();
-    console.log("MainButton ", tg.MainButton);
     // eslint-disable-next-line
   }, []);
 
