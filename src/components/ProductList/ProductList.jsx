@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { useState } from "react";
 import { useTelegram } from "../../hooks/useTelegram";
 import ProductItem from "../ProductItem/ProductItem";
@@ -62,7 +62,31 @@ const ProductList = () => {
   };
   const [addedItems, setAddedItems] = useState([]);
 
-  const { tg } = useTelegram();
+  const { tg, queryId } = useTelegram();
+
+  const onSendData = useCallback(() => {
+    const data = {
+      products: addedItems,
+      totalPrice: getTotalPrice(addedItems),
+      queryId,
+    };
+    fetch("http://localhost:8000", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    // eslint-disable-next-line
+  }, [addedItems]);
+
+  React.useEffect(() => {
+    tg.onEvent("mainButtonClicked", onSendData);
+    return () => {
+      tg.offEvent("mainButtonClicked", onSendData);
+    };
+    // eslint-disable-next-line
+  }, []);
 
   const onAdd = (product) => {
     const alredyAdded = addedItems.find((item) => item.id === product.id);
