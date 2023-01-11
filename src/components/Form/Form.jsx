@@ -1,4 +1,5 @@
 import React from "react";
+import { useCallback } from "react";
 import { useTelegram } from "../../hooks/useTelegram";
 import "./Form.css";
 
@@ -9,6 +10,22 @@ const Form = () => {
   const [subject, setSubject] = React.useState("physical");
 
   const { tg } = useTelegram();
+
+  const onSendData = useCallback(() => {
+    const data = {
+      country,
+      city,
+      street,
+      subject,
+    };
+    tg.sendData(JSON.stringify(data));
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    tg.onEvent("mainButtonClicked", onSendData);
+    // eslint-disable-next-line
+  }, []);
 
   React.useEffect(() => {
     tg.MainButton.setParams({ text: "Отправить данные" });
